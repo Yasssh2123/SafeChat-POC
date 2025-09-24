@@ -3,6 +3,7 @@ Model Evaluation Script for AI Safety Pipeline
 Demonstrates model performance metrics and evaluation capabilities
 """
 
+import os
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from sklearn.metrics import classification_report, confusion_matrix
@@ -24,11 +25,12 @@ def evaluate_offensive_model():
         ("This is terrible", 1),            # offensive_language
     ]
     
-    # Load model
+    # Load model with dynamic path
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(script_dir, "Offensive_Detection", "Output", "checkpoint-840")
+    
     tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
-    model = AutoModelForSequenceClassification.from_pretrained(
-        "C:/Users/yashc/Downloads/Solulab/Offensive_Detection/Output/checkpoint-840"
-    )
+    model = AutoModelForSequenceClassification.from_pretrained(model_path)
     
     predictions = []
     true_labels = []
@@ -69,11 +71,12 @@ def evaluate_suicide_model():
         ("Excited about the weekend", 0),   # non-suicide
     ]
     
-    # Load model
+    # Load model with dynamic path
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(script_dir, "Suicide_Detection", "Output", "checkpoint-1965")
+    
     tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
-    model = AutoModelForSequenceClassification.from_pretrained(
-        "C:/Users/yashc/Downloads/Solulab/Suicide_Detection/Output/checkpoint-1965"
-    )
+    model = AutoModelForSequenceClassification.from_pretrained(model_path)
     
     predictions = []
     true_labels = []
@@ -104,10 +107,14 @@ def evaluate_pipeline_integration():
     """Evaluate the integrated pipeline performance"""
     print("=== Integrated Pipeline Evaluation ===")
     
-    # Initialize pipeline
+    # Initialize pipeline with dynamic paths
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    offensive_model_path = os.path.join(script_dir, "Offensive_Detection", "Output", "checkpoint-840")
+    suicide_model_path = os.path.join(script_dir, "Suicide_Detection", "Output", "checkpoint-1965")
+    
     pipeline = AISafetyPipeline(
-        offensive_model_path="C:/Users/yashc/Downloads/Solulab/Offensive_Detection/Output/checkpoint-840",
-        suicide_model_path="C:/Users/yashc/Downloads/Solulab/Suicide_Detection/Output/checkpoint-1965"
+        offensive_model_path=offensive_model_path,
+        suicide_model_path=suicide_model_path
     )
     
     # Test cases with expected outcomes
