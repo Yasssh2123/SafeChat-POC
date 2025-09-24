@@ -3,6 +3,7 @@ AI Safety Pipeline - Proof of Concept
 Integrates abuse detection, escalation tracking, crisis intervention, and age filtering
 """
 
+import os
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from datetime import datetime
@@ -162,9 +163,16 @@ class AISafetyPipeline:
 
 def main():
     """Demo the AI Safety Pipeline"""
+    # Get the directory where this script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Build dynamic paths relative to script location
+    offensive_model_path = os.path.join(script_dir, "Offensive_Detection", "Output", "checkpoint-840")
+    suicide_model_path = os.path.join(script_dir, "Suicide_Detection", "Output", "checkpoint-1965")
+    
     pipeline = AISafetyPipeline(
-        offensive_model_path="C:/Users/yashc/Downloads/Solulab/Offensive_Detection/Output/checkpoint-840",
-        suicide_model_path="C:/Users/yashc/Downloads/Solulab/Suicide_Detection/Output/checkpoint-1965"
+        offensive_model_path=offensive_model_path,
+        suicide_model_path=suicide_model_path
     )
     
     test_messages = [
