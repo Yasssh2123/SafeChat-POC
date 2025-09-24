@@ -3,6 +3,7 @@ Streamlit Demo for AI Safety Pipeline
 Interactive web interface to test the safety system
 """
 
+import os
 import streamlit as st
 import pandas as pd
 from ai_safety_pipeline import AISafetyPipeline
@@ -12,9 +13,13 @@ from datetime import datetime
 # Initialize pipeline (cached for performance)
 @st.cache_resource
 def load_pipeline():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    offensive_model_path = os.path.join(script_dir, "Offensive_Detection", "Output", "checkpoint-840")
+    suicide_model_path = os.path.join(script_dir, "Suicide_Detection", "Output", "checkpoint-1965")
+    
     return AISafetyPipeline(
-        offensive_model_path="C:/Users/yashc/Downloads/Solulab/Offensive_Detection/Output/checkpoint-840",
-        suicide_model_path="C:/Users/yashc/Downloads/Solulab/Suicide_Detection/Output/checkpoint-1965"
+        offensive_model_path=offensive_model_path,
+        suicide_model_path=suicide_model_path
     )
 
 def main():
