@@ -3,6 +3,7 @@ CLI Demo for AI Safety Pipeline
 Command-line interface for testing the safety system
 """
 
+import os
 from ai_safety_pipeline import AISafetyPipeline
 import json
 
@@ -36,10 +37,15 @@ def main():
     print("🛡️  AI Safety Pipeline - CLI Demo")
     print("Loading models...")
     
+    # Get dynamic paths
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    offensive_model_path = os.path.join(script_dir, "Offensive_Detection", "Output", "checkpoint-840")
+    suicide_model_path = os.path.join(script_dir, "Suicide_Detection", "Output", "checkpoint-1965")
+    
     # Initialize pipeline
     pipeline = AISafetyPipeline(
-        offensive_model_path="C:/Users/yashc/Downloads/Solulab/Offensive_Detection/Output/checkpoint-840",
-        suicide_model_path="C:/Users/yashc/Downloads/Solulab/Suicide_Detection/Output/checkpoint-1965"
+        offensive_model_path=offensive_model_path,
+        suicide_model_path=suicide_model_path
     )
     
     print("✅ Models loaded successfully!\n")
